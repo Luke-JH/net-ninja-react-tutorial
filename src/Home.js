@@ -32,8 +32,8 @@ const Home = () => {
   return (
     <div className="home">
       {error && <p>{error}</p>}
-        {loading && <p>Loading...</p>}
-        {blogs &&<BlogList blogs={blogs} title="All Blogs"></BlogList>}
+      {loading && <p>Loading...</p>}
+      {blogs &&<BlogList blogs={blogs} title="All Blogs"></BlogList>}
     </div>
   )
 }
