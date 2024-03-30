@@ -7,9 +7,12 @@ const useFetch = (url) => {
 
   useEffect(() => {
     // runs every time the data changes / renders
+
+    const abortController = new AbortController()
+
     setLoading(true)
     setTimeout(() => {
-      fetch(url)
+      fetch(url, {signal: AbortController.signal})
         .then(res => {
           if (!res.ok){
             throw Error('could not fetch data')
@@ -22,10 +25,17 @@ const useFetch = (url) => {
           setError(null)
         })
         .catch(e => {
-          setLoading(false)
-          setError(e.message)
+          if (e.name === 'AbortError'){
+            console.log('fetch aborted')
+          } else {
+            setLoading(false)
+            setError(e.message)
+          }
         })
       }, 1000)
+
+      return () => abortController.abort()
+
   }, [url])// if empty, the array makes it only run on mounted
   
   return {data, loading, error}
